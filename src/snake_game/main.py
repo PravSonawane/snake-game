@@ -1,8 +1,12 @@
-def get_hello_message() -> str:
-    return "Hello, World!"
+import sys
+from snake_game.game import SnakeGame
 
 def main():
-    print(get_hello_message())
+    game = SnakeGame()
+    try:
+        game.run()
+    except KeyboardInterrupt:
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
