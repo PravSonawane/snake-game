@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 class SnakeGame:
     def __init__(self, width: int = 800, height: int = 600):
@@ -19,6 +20,12 @@ class SnakeGame:
         self.snake_vel_y = 0
         self.snake_speed = 2
 
+        # Food setup
+        self.food_color = (255, 0, 0)
+        self.food_pos = [
+            random.randrange(0, (self.width - self.block_size) // self.block_size) * self.block_size,
+            random.randrange(0, (self.height - self.block_size) // self.block_size) * self.block_size
+        ]
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -55,6 +62,18 @@ class SnakeGame:
                 self.snake_pos[0], 
                 self.snake_pos[1], 
                 self.block_size, 
+                self.block_size
+            )
+        )
+
+        # Draw the food
+        pygame.draw.rect(
+            self.screen,
+            self.food_color,
+            pygame.Rect(
+                self.food_pos[0],
+                self.food_pos[1],
+                self.block_size,
                 self.block_size
             )
         )
