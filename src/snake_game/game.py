@@ -36,17 +36,21 @@ class SnakeGame:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
                 elif event.key == pygame.K_UP:
-                    self.snake_vel_x = 0
-                    self.snake_vel_y = -self.snake_speed
+                    if len(self.snake_body) == 1 or self.snake_vel_y != self.snake_speed:
+                        self.snake_vel_x = 0
+                        self.snake_vel_y = -self.snake_speed
                 elif event.key == pygame.K_DOWN:
-                    self.snake_vel_x = 0
-                    self.snake_vel_y = self.snake_speed
+                    if len(self.snake_body) == 1 or self.snake_vel_y != -self.snake_speed:
+                        self.snake_vel_x = 0
+                        self.snake_vel_y = self.snake_speed
                 elif event.key == pygame.K_LEFT:
-                    self.snake_vel_x = -self.snake_speed
-                    self.snake_vel_y = 0
+                    if len(self.snake_body) == 1 or self.snake_vel_x != self.snake_speed:
+                        self.snake_vel_x = -self.snake_speed
+                        self.snake_vel_y = 0
                 elif event.key == pygame.K_RIGHT:
-                    self.snake_vel_x = self.snake_speed
-                    self.snake_vel_y = 0
+                    if len(self.snake_body) == 1 or self.snake_vel_x != -self.snake_speed:
+                        self.snake_vel_x = self.snake_speed
+                        self.snake_vel_y = 0
 
     def update(self):
         if self.game_over:

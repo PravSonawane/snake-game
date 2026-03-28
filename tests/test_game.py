@@ -67,6 +67,21 @@ def test_handle_events_movement():
     assert game.snake_vel_x == game.snake_speed
     assert game.snake_vel_y == 0
 
+def test_handle_events_ignore_opposite_direction():
+    game = SnakeGame()
+    game.snake_body = [[100, 100], [80, 100]] # length > 1
+    
+    # Moving right currently
+    game.snake_vel_x = game.snake_speed
+    game.snake_vel_y = 0
+
+    # Try to move left, should be ignored
+    event = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_LEFT)
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.snake_vel_x == game.snake_speed
+    assert game.snake_vel_y == 0
+
 def test_update():
     game = SnakeGame()
     game.snake_pos = [100, 100]
