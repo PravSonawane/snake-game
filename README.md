@@ -2,6 +2,9 @@
 
 A classic Snake Game built with Python and Pygame.
 
+## Demo
+![Alt text](media/demo.gif)
+
 ## Features
 
 - **Classic Gameplay**: Eat food to grow your snake and increase your score.
