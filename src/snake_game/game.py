@@ -15,6 +15,9 @@ class SnakeGame:
         self.block_size = 20
         self.snake_pos = [self.width // 2, self.height // 2]
         self.snake_color = (0, 255, 0)
+        self.snake_vel_x = 0
+        self.snake_vel_y = 0
+        self.snake_speed = 2
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -23,9 +26,22 @@ class SnakeGame:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
+                elif event.key == pygame.K_UP:
+                    self.snake_vel_x = 0
+                    self.snake_vel_y = -self.snake_speed
+                elif event.key == pygame.K_DOWN:
+                    self.snake_vel_x = 0
+                    self.snake_vel_y = self.snake_speed
+                elif event.key == pygame.K_LEFT:
+                    self.snake_vel_x = -self.snake_speed
+                    self.snake_vel_y = 0
+                elif event.key == pygame.K_RIGHT:
+                    self.snake_vel_x = self.snake_speed
+                    self.snake_vel_y = 0
 
     def update(self):
-        pass
+        self.snake_pos[0] += self.snake_vel_x
+        self.snake_pos[1] += self.snake_vel_y
 
     def draw(self):
         # Fill the screen with a dark background
