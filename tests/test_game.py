@@ -8,6 +8,9 @@ def test_initialization():
     assert game.height == 600
     assert game.running is True
     assert game.game_over is False
+    assert game.game_over_selected_option == 0
+    assert game.new_game_rect == pygame.Rect(0, 0, 0, 0)
+    assert game.quit_rect == pygame.Rect(0, 0, 0, 0)
     assert game.block_size == 20
     assert game.snake_pos == [400, 300]
     assert game.snake_body == [[400, 300]]
@@ -146,4 +149,83 @@ def test_update_self_collision():
     game.snake_vel_y = -game.snake_speed
     game.update()
     assert game.game_over is True
+
+def test_reset_game():
+    game = SnakeGame()
+    game.score = 10
+    game.game_over = True
+    game.game_over_selected_option = 1
+    game.snake_vel_x = game.snake_speed
+    game.snake_body = [[100, 100], [80, 100]]
+    
+    game.reset_game()
+    assert game.score == 0
+    assert game.game_over is False
+    assert game.game_over_selected_option == 0
+    assert game.snake_vel_x == 0
+    assert game.snake_vel_y == 0
+    assert len(game.snake_body) == 1
+
+def test_game_over_options_keyboard():
+    game = SnakeGame()
+    game.game_over = True
+    
+    # Down key
+    event = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN)
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.game_over_selected_option == 1 # Quit
+
+    # Up key
+    event = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP)
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.game_over_selected_option == 0 # New Game
+    
+    # Enter key to reset
+    event = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN)
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.game_over is False
+
+    # Enter key to quit
+    game.game_over = True
+    game.game_over_selected_option = 1
+    event = pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN)
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.running is False
+
+def test_game_over_options_mouse():
+    game = SnakeGame()
+    game.game_over = True
+    game.new_game_rect = pygame.Rect(100, 100, 50, 50)
+    game.quit_rect = pygame.Rect(100, 200, 50, 50)
+    
+    # Hover Quit
+    event = pygame.event.Event(pygame.MOUSEMOTION, pos=(120, 220))
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.game_over_selected_option == 1
+
+    # Hover New Game
+    event = pygame.event.Event(pygame.MOUSEMOTION, pos=(120, 120))
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.game_over_selected_option == 0
+    
+    # Click Quit
+    game.game_over_selected_option = 0
+    event = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=(120, 220))
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.running is False
+
+    # Click New Game
+    game.running = True
+    game.game_over = True
+    event = pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=1, pos=(120, 120))
+    pygame.event.post(event)
+    game.handle_events()
+    assert game.game_over is False
 
