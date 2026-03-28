@@ -52,12 +52,21 @@ class SnakeGame:
         if self.game_over:
             return
 
+        # Do not update game state if the snake hasn't started moving
+        if self.snake_vel_x == 0 and self.snake_vel_y == 0:
+            return
+
         self.snake_pos[0] += self.snake_vel_x
         self.snake_pos[1] += self.snake_vel_y
 
         # Boundary collision
         if (self.snake_pos[0] < 0 or self.snake_pos[0] >= self.width or
             self.snake_pos[1] < 0 or self.snake_pos[1] >= self.height):
+            self.game_over = True
+            return
+
+        # Self collision
+        if list(self.snake_pos) in self.snake_body:
             self.game_over = True
             return
 

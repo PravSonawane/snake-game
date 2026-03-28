@@ -116,3 +116,14 @@ def test_update_game_over_state_does_not_move():
     game.update()
     assert game.snake_pos == [100, 100]
 
+def test_update_self_collision():
+    game = SnakeGame(800, 600)
+    # Simulate a snake with a body spanning 5 blocks
+    game.snake_pos = [100, 100]
+    game.snake_body = [[100, 100], [80, 100], [80, 80], [100, 80], [120, 80]] 
+    # Moving up into its own body: new head would be [100, 80], which is in snake_body
+    game.snake_vel_x = 0
+    game.snake_vel_y = -game.snake_speed
+    game.update()
+    assert game.game_over is True
+
