@@ -19,13 +19,13 @@ class SnakeGame:
         self.block_size = 20
         self.snake_pos = [self.width // 2, self.height // 2]
         self.snake_body = [list(self.snake_pos)]
-        self.snake_color = (0, 255, 0)
+        self.snake_color = (52, 211, 153) # Tailwind Emerald 400
         self.snake_vel_x = 0
         self.snake_vel_y = 0
         self.snake_speed = self.block_size
 
         # Food setup
-        self.food_color = (255, 0, 0)
+        self.food_color = (244, 63, 94) # Tailwind Rose 500
         self.food_pos = [
             random.randrange(0, self.width // self.block_size) * self.block_size,
             random.randrange(0, self.height // self.block_size) * self.block_size
@@ -88,14 +88,14 @@ class SnakeGame:
 
     def draw(self):
         # Fill the screen with a dark background
-        self.screen.fill((30, 30, 30))
+        self.screen.fill((15, 23, 42)) # Tailwind Slate 900
 
         # Draw the score background
-        pygame.draw.rect(self.screen, (50, 50, 50), pygame.Rect(0, 0, self.width, self.score_height))
+        pygame.draw.rect(self.screen, (30, 41, 59), pygame.Rect(0, 0, self.width, self.score_height)) # Slate 800
 
         # Draw the score text on top right
         font = pygame.font.SysFont(None, 35)
-        score_text = font.render(f"Score: {self.score}", True, (255, 255, 255))
+        score_text = font.render(f"Score: {self.score}", True, (248, 250, 252)) # Slate 50
         score_rect = score_text.get_rect(topright=(self.width - 20, 10))
         self.screen.blit(score_text, score_rect)
 
@@ -126,7 +126,7 @@ class SnakeGame:
         
         if self.game_over:
             font = pygame.font.SysFont(None, 75)
-            text = font.render("Game Over", True, (255, 0, 0))
+            text = font.render("Game Over", True, (248, 113, 113)) # Tailwind Red 400
             text_rect = text.get_rect(center=(self.width // 2, self.score_height + self.height // 2))
             self.screen.blit(text, text_rect)
 

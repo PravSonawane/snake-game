@@ -14,7 +14,8 @@ def test_initialization():
     assert game.snake_vel_x == 0
     assert game.snake_vel_y == 0
     assert game.snake_speed == game.block_size
-    assert game.food_color == (255, 0, 0)
+    assert game.snake_color == (52, 211, 153)
+    assert game.food_color == (244, 63, 94)
     assert game.score == 0
     assert game.score_height == 40
 
