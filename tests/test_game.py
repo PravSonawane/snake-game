@@ -11,7 +11,7 @@ def test_initialization():
     assert game.snake_pos == [400, 300]
     assert game.snake_vel_x == 0
     assert game.snake_vel_y == 0
-    assert game.snake_speed == 2
+    assert game.snake_speed == game.block_size
     assert game.food_color == (255, 0, 0)
 
     # Food bounds and constraints

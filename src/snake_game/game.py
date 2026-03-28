@@ -18,13 +18,13 @@ class SnakeGame:
         self.snake_color = (0, 255, 0)
         self.snake_vel_x = 0
         self.snake_vel_y = 0
-        self.snake_speed = 2
+        self.snake_speed = self.block_size
 
         # Food setup
         self.food_color = (255, 0, 0)
         self.food_pos = [
-            random.randrange(0, (self.width - self.block_size) // self.block_size) * self.block_size,
-            random.randrange(0, (self.height - self.block_size) // self.block_size) * self.block_size
+            random.randrange(0, self.width // self.block_size) * self.block_size,
+            random.randrange(0, self.height // self.block_size) * self.block_size
         ]
     def handle_events(self):
         for event in pygame.event.get():
@@ -53,7 +53,7 @@ class SnakeGame:
     def draw(self):
         # Fill the screen with a dark background
         self.screen.fill((30, 30, 30))
-        
+
         # Draw the snake
         pygame.draw.rect(
             self.screen, 
@@ -85,7 +85,8 @@ class SnakeGame:
             self.handle_events()
             self.update()
             self.draw()
-            self.clock.tick(60)
+            # Lower tick rate for grid-based discrete movement
+            self.clock.tick(10)
         
         pygame.quit()
         sys.exit()
