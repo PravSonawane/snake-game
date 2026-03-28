@@ -7,7 +7,9 @@ class SnakeGame:
         pygame.init()
         self.width = width
         self.height = height
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.score_height = 40
+        self.score = 0
+        self.screen = pygame.display.set_mode((self.width, self.height + self.score_height))
         pygame.display.set_caption("Snake Game")
         self.clock = pygame.time.Clock()
         self.running = True
@@ -76,6 +78,7 @@ class SnakeGame:
 
         self.snake_body.insert(0, list(self.snake_pos))
         if self.snake_pos == self.food_pos:
+            self.score += 1
             self.food_pos = [
                 random.randrange(0, self.width // self.block_size) * self.block_size,
                 random.randrange(0, self.height // self.block_size) * self.block_size
@@ -87,6 +90,15 @@ class SnakeGame:
         # Fill the screen with a dark background
         self.screen.fill((30, 30, 30))
 
+        # Draw the score background
+        pygame.draw.rect(self.screen, (50, 50, 50), pygame.Rect(0, 0, self.width, self.score_height))
+
+        # Draw the score text on top right
+        font = pygame.font.SysFont(None, 35)
+        score_text = font.render(f"Score: {self.score}", True, (255, 255, 255))
+        score_rect = score_text.get_rect(topright=(self.width - 20, 10))
+        self.screen.blit(score_text, score_rect)
+
         # Draw the snake
         for block in self.snake_body:
             pygame.draw.rect(
@@ -94,7 +106,7 @@ class SnakeGame:
                 self.snake_color, 
                 pygame.Rect(
                     block[0], 
-                    block[1], 
+                    block[1] + self.score_height, 
                     self.block_size, 
                     self.block_size
                 )
@@ -106,7 +118,7 @@ class SnakeGame:
             self.food_color,
             pygame.Rect(
                 self.food_pos[0],
-                self.food_pos[1],
+                self.food_pos[1] + self.score_height,
                 self.block_size,
                 self.block_size
             )
@@ -115,7 +127,7 @@ class SnakeGame:
         if self.game_over:
             font = pygame.font.SysFont(None, 75)
             text = font.render("Game Over", True, (255, 0, 0))
-            text_rect = text.get_rect(center=(self.width // 2, self.height // 2))
+            text_rect = text.get_rect(center=(self.width // 2, self.score_height + self.height // 2))
             self.screen.blit(text, text_rect)
 
         pygame.display.flip()

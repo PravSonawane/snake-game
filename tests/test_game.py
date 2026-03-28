@@ -15,6 +15,8 @@ def test_initialization():
     assert game.snake_vel_y == 0
     assert game.snake_speed == game.block_size
     assert game.food_color == (255, 0, 0)
+    assert game.score == 0
+    assert game.score_height == 40
 
     # Food bounds and constraints
     assert 0 <= game.food_pos[0] < game.width
@@ -99,11 +101,13 @@ def test_update_eats_food():
     game.food_pos = [100 + game.snake_speed, 100]
     game.snake_vel_x = game.snake_speed
     game.snake_vel_y = 0
+    game.score = 0
     game.update()
     assert game.snake_pos == [100 + game.snake_speed, 100]
     assert len(game.snake_body) == 2
     assert game.snake_body == [[100 + game.snake_speed, 100], [100, 100]]
     assert game.food_pos != [100 + game.snake_speed, 100]
+    assert game.score == 1
 
 def test_draw():
     # Simple check to ensure draw doesn't completely blow up
