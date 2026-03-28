@@ -9,6 +9,7 @@ def test_initialization():
     assert game.running is True
     assert game.block_size == 20
     assert game.snake_pos == [400, 300]
+    assert game.snake_body == [[400, 300]]
     assert game.snake_vel_x == 0
     assert game.snake_vel_y == 0
     assert game.snake_speed == game.block_size
@@ -68,10 +69,25 @@ def test_handle_events_movement():
 def test_update():
     game = SnakeGame()
     game.snake_pos = [100, 100]
+    game.snake_body = [[100, 100]]
     game.snake_vel_x = game.snake_speed
     game.snake_vel_y = 0
     game.update()
     assert game.snake_pos == [100 + game.snake_speed, 100]
+    assert game.snake_body == [[100 + game.snake_speed, 100]]
+
+def test_update_eats_food():
+    game = SnakeGame()
+    game.snake_pos = [100, 100]
+    game.snake_body = [[100, 100]]
+    game.food_pos = [100 + game.snake_speed, 100]
+    game.snake_vel_x = game.snake_speed
+    game.snake_vel_y = 0
+    game.update()
+    assert game.snake_pos == [100 + game.snake_speed, 100]
+    assert len(game.snake_body) == 2
+    assert game.snake_body == [[100 + game.snake_speed, 100], [100, 100]]
+    assert game.food_pos != [100 + game.snake_speed, 100]
 
 def test_draw():
     # Simple check to ensure draw doesn't completely blow up

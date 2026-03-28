@@ -15,6 +15,7 @@ class SnakeGame:
         # Initial snake setup
         self.block_size = 20
         self.snake_pos = [self.width // 2, self.height // 2]
+        self.snake_body = [list(self.snake_pos)]
         self.snake_color = (0, 255, 0)
         self.snake_vel_x = 0
         self.snake_vel_y = 0
@@ -50,21 +51,31 @@ class SnakeGame:
         self.snake_pos[0] += self.snake_vel_x
         self.snake_pos[1] += self.snake_vel_y
 
+        self.snake_body.insert(0, list(self.snake_pos))
+        if self.snake_pos == self.food_pos:
+            self.food_pos = [
+                random.randrange(0, self.width // self.block_size) * self.block_size,
+                random.randrange(0, self.height // self.block_size) * self.block_size
+            ]
+        else:
+            self.snake_body.pop()
+
     def draw(self):
         # Fill the screen with a dark background
         self.screen.fill((30, 30, 30))
 
         # Draw the snake
-        pygame.draw.rect(
-            self.screen, 
-            self.snake_color, 
-            pygame.Rect(
-                self.snake_pos[0], 
-                self.snake_pos[1], 
-                self.block_size, 
-                self.block_size
+        for block in self.snake_body:
+            pygame.draw.rect(
+                self.screen, 
+                self.snake_color, 
+                pygame.Rect(
+                    block[0], 
+                    block[1], 
+                    self.block_size, 
+                    self.block_size
+                )
             )
-        )
 
         # Draw the food
         pygame.draw.rect(
