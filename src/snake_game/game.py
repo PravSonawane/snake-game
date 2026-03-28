@@ -11,6 +11,7 @@ class SnakeGame:
         pygame.display.set_caption("Snake Game")
         self.clock = pygame.time.Clock()
         self.running = True
+        self.game_over = False
 
         # Initial snake setup
         self.block_size = 20
@@ -48,8 +49,17 @@ class SnakeGame:
                     self.snake_vel_y = 0
 
     def update(self):
+        if self.game_over:
+            return
+
         self.snake_pos[0] += self.snake_vel_x
         self.snake_pos[1] += self.snake_vel_y
+
+        # Boundary collision
+        if (self.snake_pos[0] < 0 or self.snake_pos[0] >= self.width or
+            self.snake_pos[1] < 0 or self.snake_pos[1] >= self.height):
+            self.game_over = True
+            return
 
         self.snake_body.insert(0, list(self.snake_pos))
         if self.snake_pos == self.food_pos:
@@ -89,6 +99,12 @@ class SnakeGame:
             )
         )
         
+        if self.game_over:
+            font = pygame.font.SysFont(None, 75)
+            text = font.render("Game Over", True, (255, 0, 0))
+            text_rect = text.get_rect(center=(self.width // 2, self.height // 2))
+            self.screen.blit(text, text_rect)
+
         pygame.display.flip()
 
     def run(self):

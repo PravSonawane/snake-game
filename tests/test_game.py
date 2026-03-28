@@ -7,6 +7,7 @@ def test_initialization():
     assert game.width == 800
     assert game.height == 600
     assert game.running is True
+    assert game.game_over is False
     assert game.block_size == 20
     assert game.snake_pos == [400, 300]
     assert game.snake_body == [[400, 300]]
@@ -96,3 +97,22 @@ def test_draw():
     # If no exceptions are raised it indicates `draw` logic 
     # executes successfully on the headless display.
     assert True
+
+def test_update_boundary_collision():
+    game = SnakeGame(800, 600)
+    game.snake_pos = [780, 100]
+    game.snake_vel_x = game.snake_speed
+    game.snake_vel_y = 0
+    game.update()
+    # at next step, x becomes 800, and width is 800. 800 >= 800 so collision!
+    assert game.game_over is True
+
+def test_update_game_over_state_does_not_move():
+    game = SnakeGame(800, 600)
+    game.game_over = True
+    game.snake_pos = [100, 100]
+    game.snake_vel_x = game.snake_speed
+    game.snake_vel_y = 0
+    game.update()
+    assert game.snake_pos == [100, 100]
+
